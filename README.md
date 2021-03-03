@@ -1,4 +1,4 @@
-# mediumclone_vue
+# vue-test
 
 ## Project setup
 ```

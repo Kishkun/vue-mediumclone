@@ -1,13 +1,15 @@
 <template>
-  <h1 class="test-h1">{{ title }}</h1>
+  <v-app>
+    <router-view />
+  </v-app>
 </template>
 
 <script>
 export default {
+  name: 'App',
+
   data: () => ({
-    title: 'Medium clone',
-  }),
+    //
+  })
 }
 </script>
-
-<style></style>
