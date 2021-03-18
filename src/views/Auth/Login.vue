@@ -20,7 +20,7 @@
           <v-text-field
             v-model="password"
             name="password"
-            :counter="'>' + 6"
+            :counter="'>' + 8"
             :rules="passwordRules"
             label="Password"
             type="password"
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+// import {mapActions, mapState} from 'vuex'
 
 export default {
   name: 'Login',
@@ -57,23 +57,23 @@ export default {
     passwordRules: []
   }),
   computed: {
-    ...mapState({
-      loading: state => state.auth.loading,
-      loginSuccess: state => state.auth.login
-    })
+    // ...mapState({
+    //   loading: state => state.auth.loading,
+    //   loginSuccess: state => state.auth.login
+    // })
   },
   methods: {
-    ...mapActions({
-      login: 'auth/LOGIN'
-    }),
+    // ...mapActions({
+    //   login: 'auth/LOGIN'
+    // }),
     async onSubmitHandler() {
       await this.validationForm()
       if (this.$refs.form.validate()) {
-        const user = {
-          email: this.email,
-          password: this.password
-        }
-        this.login(user)
+        // const user = {
+        //   email: this.email,
+        //   password: this.password
+        // }
+        // this.login(user)
         //this.reset()
       }
     },
@@ -87,7 +87,7 @@ export default {
       ]
       this.passwordRules = [
         v => !!v || 'Password is required',
-        v => (v && v.length >= 6) || 'Password must be more than 6 characters'
+        v => (v && v.length >= 8) || 'Password must be more than 8 characters'
       ]
     },
     reset() {
@@ -95,16 +95,16 @@ export default {
     }
   },
   watch: {
-    loginSuccess: {
-      handler(value) {
-        if (value) {
-          this.reset()
-          this.$nextTick(() => {
-            this.$router.push({name: 'Home'})
-          })
-        }
-      }
-    }
+    // loginSuccess: {
+    //   handler(value) {
+    //     if (value) {
+    //       this.reset()
+    //       this.$nextTick(() => {
+    //         this.$router.push({name: 'Home'})
+    //       })
+    //     }
+    //   }
+    // }
   }
 }
 </script>

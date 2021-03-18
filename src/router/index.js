@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import store from '@/store'
+import {getItem} from '../helpers/persistantStorage'
 
 Vue.use(VueRouter)
 
@@ -34,9 +36,12 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = to.matched.some(m => m.meta.auth)
-  const user = JSON.parse(localStorage.getItem('login'))
-  if (to.name !== 'Login' && !!isAuthenticated && !user) {
-    next({name: 'Login'})
+  const user = store.state.auth.user
+  const accessToken = getItem('accessToken')
+  if (to.name !== 'Register' && !!isAuthenticated && !user && !accessToken) {
+    next({name: 'Register'})
+  } else if (to.name !== 'Home' && accessToken) {
+    next({name: 'Home'})
   } else {
     next()
   }

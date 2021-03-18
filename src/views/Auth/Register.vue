@@ -12,9 +12,16 @@
             required
           ></v-text-field>
           <v-text-field
+            v-model="username"
+            name="username"
+            :rules="usernameRules"
+            label="User name"
+            required
+          ></v-text-field>
+          <v-text-field
             v-model="password"
             name="password"
-            :counter="'>' + 6"
+            :counter="'>' + 8"
             :rules="passwordRules"
             label="Password"
             type="password"
@@ -26,7 +33,7 @@
             type="password"
             :rules="confirmPasswordRules"
             label="Confirm password"
-            :counter="'>' + 6"
+            :counter="'>' + 8"
             required
           ></v-text-field>
           <div class="d-flex justify-lg-space-between mt-5">
@@ -34,8 +41,8 @@
               depressed
               color="success"
               @click="onSubmitHandler"
-              :loading="loading"
-              :disabled="!valid || loading"
+              :loading="isSubmitting"
+              :disabled="!valid || isSubmitting"
             >
               Submit
             </v-btn>
@@ -43,6 +50,12 @@
               Back
             </v-btn>
           </div>
+          <v-expand-transition>
+            <ValidationErrors
+              v-if="validationErrors"
+              :errors="validationErrors"
+            />
+          </v-expand-transition>
         </v-form>
       </v-col>
     </v-row>
@@ -50,24 +63,43 @@
 </template>
 
 <script>
+import {mapActions, mapState} from 'vuex'
+import ValidationErrors from '@/components/ValidationErrors'
+
 export default {
   name: 'Register',
+  components: {ValidationErrors},
   data: () => ({
     valid: false,
-    loading: false,
     email: '',
     password: '',
+    username: '',
     confirmPassword: '',
     emailRules: [],
+    usernameRules: [],
     passwordRules: [],
     confirmPasswordRules: []
   }),
-
+  computed: {
+    ...mapState({
+      isSubmitting: state => state.auth.isSubmitting,
+      isLoggedIn: state => state.auth.isLoggedIn,
+      validationErrors: state => state.auth.validationErrors
+    })
+  },
   methods: {
+    ...mapActions({
+      register: 'auth/REGISTER'
+    }),
     async onSubmitHandler() {
       await this.validationForm()
       if (this.$refs.form.validate()) {
-        this.reset()
+        const user = {
+          email: this.email,
+          username: this.username,
+          password: this.password
+        }
+        await this.register(user)
       }
     },
     validationForm() {
@@ -78,13 +110,14 @@ export default {
             v
           ) || 'E-mail must be valid'
       ]
+      this.usernameRules = [v => !!v || 'User name is required']
       this.passwordRules = [
         v => !!v || 'Password is required',
-        v => (v && v.length >= 6) || 'Password must be more than 6 characters'
+        v => (v && v.length >= 8) || 'Password must be more than 8 characters'
       ]
       this.confirmPasswordRules = [
         v => !!v || 'Password is required',
-        v => v === this.password || 'Password must be more than 6 characters'
+        v => v === this.password || 'Password must be more than 8 characters'
       ]
     },
     back() {
@@ -92,6 +125,18 @@ export default {
     },
     reset() {
       this.$refs.form.reset()
+    }
+  },
+  watch: {
+    isLoggedIn: {
+      handler(value) {
+        if (value) {
+          this.reset()
+          this.$nextTick(() => {
+            this.$router.push({name: 'Home'})
+          })
+        }
+      }
     }
   }
 }
