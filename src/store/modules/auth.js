@@ -1,9 +1,10 @@
 import authApi from '../../api/auth'
-import {setItem} from '../../helpers/persistantStorage'
+import {setItem, removeItem} from '../../helpers/persistantStorage'
 
 const state = () => ({
-  user: null,
+  currentUser: null,
   isSubmitting: false,
+  isLoading: false,
   isLoggedIn: null,
   validationErrors: null
 })
@@ -12,15 +13,19 @@ const mutations = {
   REGISTER_START(state, isSubmitting) {
     state.isSubmitting = isSubmitting
   },
-  SET_USER(state, user) {
-    state.user = user
-    state.isLoggedIn = true
+  SET_USER(state, currentUser) {
+    state.currentUser = currentUser
+    state.isLoggedIn = !!currentUser
   },
   SET_ERRORS(state, errors) {
     state.validationErrors = errors
   },
   LOGIN_START(state, isSubmitting) {
     state.isSubmitting = isSubmitting
+  },
+  LOADING_CURRENT_USER(state, payload) {
+    state.isLoading = payload
+    state.isLoggedIn = payload
   }
 }
 
@@ -46,6 +51,7 @@ const actions = {
     try {
       const response = await authApi.register(formData)
       if (response.data) {
+        console.log(response.data)
         commit('SET_USER', response.data.user)
         setItem('accessToken', response.data.user.token)
       }
@@ -66,12 +72,39 @@ const actions = {
       commit('SET_ERRORS', error.response.data.errors)
     }
     commit('LOGIN_START', false)
+  },
+  async GET_CURRENT_USER({commit}) {
+    commit('LOADING_CURRENT_USER', true)
+    try {
+      const response = await authApi.getUser()
+      if (response.data) {
+        commit('SET_USER', response.data.user)
+      }
+    } catch (error) {
+      console.log(error.response.data.errors)
+    }
+    commit('LOADING_CURRENT_USER', false)
+  },
+  async LOGOUT({commit}) {
+    try {
+      commit('SET_USER', null)
+      removeItem('accessToken')
+    } catch (error) {
+      commit('SET_ERRORS', error.response.data.errors)
+    }
   }
+}
+
+const getters = {
+  currentUser: state => state.currentUser,
+  isLoggedIn: state => Boolean(state.isLoggedIn),
+  isAnonymous: state => state.isLoggedIn === false
 }
 
 export default {
   namespaced: true,
   state,
-  actions,
-  mutations
+  getters,
+  mutations,
+  actions
 }
