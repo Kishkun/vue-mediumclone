@@ -4,6 +4,11 @@ const register = user => {
   return http.post('/users', {user})
 }
 
+const login = user => {
+  return http.post('/users/login', {user})
+}
+
 export default {
-  register
+  register,
+  login
 }

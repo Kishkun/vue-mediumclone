@@ -31,12 +31,18 @@
               depressed
               color="success"
               @click="onSubmitHandler"
-              :loading="loading"
-              :disabled="!valid || loading"
+              :loading="isSubmitting"
+              :disabled="!valid || isSubmitting"
             >
               Submit
             </v-btn>
           </div>
+          <v-expand-transition>
+            <ValidationErrors
+              v-if="validationErrors"
+              :errors="validationErrors"
+            />
+          </v-expand-transition>
         </v-form>
       </v-col>
     </v-row>
@@ -44,10 +50,13 @@
 </template>
 
 <script>
-// import {mapActions, mapState} from 'vuex'
+import {mapActions, mapState, mapMutations} from 'vuex'
+
+import ValidationErrors from '../../components/ValidationErrors'
 
 export default {
   name: 'Login',
+  components: {ValidationErrors},
   data: () => ({
     valid: false,
     email: '',
@@ -57,24 +66,27 @@ export default {
     passwordRules: []
   }),
   computed: {
-    // ...mapState({
-    //   loading: state => state.auth.loading,
-    //   loginSuccess: state => state.auth.login
-    // })
+    ...mapState({
+      isSubmitting: state => state.auth.isSubmitting,
+      isLoggedIn: state => state.auth.isLoggedIn,
+      validationErrors: state => state.auth.validationErrors
+    })
   },
   methods: {
-    // ...mapActions({
-    //   login: 'auth/LOGIN'
-    // }),
+    ...mapActions({
+      login: 'auth/LOGIN'
+    }),
+    ...mapMutations({
+      setErrors: 'auth/SET_ERRORS'
+    }),
     async onSubmitHandler() {
       await this.validationForm()
       if (this.$refs.form.validate()) {
-        // const user = {
-        //   email: this.email,
-        //   password: this.password
-        // }
-        // this.login(user)
-        //this.reset()
+        const user = {
+          email: this.email,
+          password: this.password
+        }
+        await this.login(user)
       }
     },
     validationForm() {
@@ -94,17 +106,20 @@ export default {
       this.$refs.form.reset()
     }
   },
+  created() {
+    this.setErrors(null)
+  },
   watch: {
-    // loginSuccess: {
-    //   handler(value) {
-    //     if (value) {
-    //       this.reset()
-    //       this.$nextTick(() => {
-    //         this.$router.push({name: 'Home'})
-    //       })
-    //     }
-    //   }
-    // }
+    isLoggedIn: {
+      handler(value) {
+        if (value) {
+          this.reset()
+          this.$nextTick(() => {
+            this.$router.push({name: 'Home'})
+          })
+        }
+      }
+    }
   }
 }
 </script>
