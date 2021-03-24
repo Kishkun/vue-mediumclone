@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import {mapActions, mapMutations, mapState} from 'vuex'
 import ValidationErrors from '@/components/ValidationErrors'
 
 export default {
@@ -90,6 +90,9 @@ export default {
   methods: {
     ...mapActions({
       register: 'auth/REGISTER'
+    }),
+    ...mapMutations({
+      setErrors: 'auth/SET_ERRORS'
     }),
     async onSubmitHandler() {
       await this.validationForm()
@@ -126,6 +129,9 @@ export default {
     reset() {
       this.$refs.form.reset()
     }
+  },
+  created() {
+    this.setErrors(null)
   },
   watch: {
     isLoggedIn: {

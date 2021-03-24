@@ -14,12 +14,13 @@ const mutations = {
   },
   SET_USER(state, user) {
     state.user = user
-  },
-  SET_IS_LOGGED_IN(state, isLoggedIn) {
-    state.isLoggedIn = isLoggedIn
+    state.isLoggedIn = true
   },
   SET_ERRORS(state, errors) {
     state.validationErrors = errors
+  },
+  LOGIN_START(state, isSubmitting) {
+    state.isSubmitting = isSubmitting
   }
 }
 
@@ -32,7 +33,6 @@ const actions = {
     //     .then(response => {
     //       if (response.data) {
     //         commit('SET_USER', response.data.user)
-    //         commit('SET_IS_LOGGED_IN', true)
     //       } else {
     //         commit('REGISTER_START', false)
     //       }
@@ -48,12 +48,24 @@ const actions = {
       if (response.data) {
         commit('SET_USER', response.data.user)
         setItem('accessToken', response.data.user.token)
-        commit('SET_IS_LOGGED_IN', true)
       }
     } catch (error) {
       commit('SET_ERRORS', error.response.data.errors)
     }
     commit('REGISTER_START', false)
+  },
+  async LOGIN({commit}, formData) {
+    commit('LOGIN_START', true)
+    try {
+      const response = await authApi.login(formData)
+      if (response.data) {
+        commit('SET_USER', response.data.user)
+        setItem('accessToken', response.data.user.token)
+      }
+    } catch (error) {
+      commit('SET_ERRORS', error.response.data.errors)
+    }
+    commit('LOGIN_START', false)
   }
 }
 
