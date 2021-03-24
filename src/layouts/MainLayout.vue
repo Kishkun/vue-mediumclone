@@ -1,5 +1,6 @@
 <template>
-  <div class="main-wrapper is-hidden" :class="{'is-hidden': isFixed}">
+  <div class="main-wrapper">
+    <TopBar />
     <v-main>
       <router-view />
     </v-main>
@@ -7,17 +8,16 @@
 </template>
 
 <script>
+import TopBar from '../components/navigations/TopBar'
+
 export default {
   main: 'MainLayout',
+  components: {TopBar},
   data: () => ({
     mini: true,
     drawer: true
   }),
-  computed: {
-    isFixed() {
-      return this.$vuetify.breakpoint.lgAndDown
-    }
-  },
+  computed: {},
   methods: {},
   watch: {}
 }

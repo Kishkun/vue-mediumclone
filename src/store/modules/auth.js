@@ -1,5 +1,5 @@
 import authApi from '../../api/auth'
-import {setItem} from '../../helpers/persistantStorage'
+import {setItem, removeItem} from '../../helpers/persistantStorage'
 
 const state = () => ({
   user: null,
@@ -14,7 +14,7 @@ const mutations = {
   },
   SET_USER(state, user) {
     state.user = user
-    state.isLoggedIn = true
+    state.isLoggedIn = !!user
   },
   SET_ERRORS(state, errors) {
     state.validationErrors = errors
@@ -66,6 +66,14 @@ const actions = {
       commit('SET_ERRORS', error.response.data.errors)
     }
     commit('LOGIN_START', false)
+  },
+  async LOGOUT({commit}) {
+    try {
+      commit('SET_USER', null)
+      removeItem('accessToken')
+    } catch (error) {
+      commit('SET_ERRORS', error.response.data.errors)
+    }
   }
 }
 

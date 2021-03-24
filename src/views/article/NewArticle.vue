@@ -1,11 +1,11 @@
 <template>
-  <v-container>
-    Home page
+  <v-container class="pa-10" fluid>
+    NewArticle page
   </v-container>
 </template>
 
 <script>
 export default {
-  name: 'Home'
+  name: 'NewArticle'
 }
 </script>
