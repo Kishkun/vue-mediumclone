@@ -1,6 +1,6 @@
 <template>
   <div class="main-wrapper">
-    <TopBar />
+    <TopBar v-if="currentUser" />
     <v-main>
       <router-view />
     </v-main>
@@ -9,6 +9,7 @@
 
 <script>
 import TopBar from '../components/navigations/TopBar'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   main: 'MainLayout',
@@ -17,8 +18,18 @@ export default {
     mini: true,
     drawer: true
   }),
-  computed: {},
-  methods: {},
-  watch: {}
+  computed: {
+    ...mapGetters({
+      currentUser: 'auth/currentUser'
+    })
+  },
+  methods: {
+    ...mapActions({
+      getCurrentUser: 'auth/GET_CURRENT_USER'
+    })
+  },
+  async mounted() {
+    await this.getCurrentUser()
+  }
 }
 </script>

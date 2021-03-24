@@ -4,7 +4,7 @@
       <div class="d-flex align-center ml-lg-5">
         <v-img
           alt="logo"
-          src="/images/logo-test.gif"
+          src="/images/logo.gif"
           width="40"
           class="mr-4 rounded-5"
         />
@@ -14,17 +14,17 @@
 
     <v-spacer />
 
-    <v-list class="d-flex mr-5" color="transparent" dense rounded>
+    <v-list class="d-flex mr-2 mr-md-5" color="transparent" dense rounded>
       <v-list-item
         v-for="item in items"
         :key="item.title"
         link
-        class="mr-3 px-6"
+        class="mr-3 px-3 px-md-6"
         :to="item.route"
         color="primary"
         exact
       >
-        <v-list-item-icon class="mr-4">
+        <v-list-item-icon class="mr-1 mr-md-4">
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-icon>
 
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   name: 'TopBar',
@@ -57,9 +57,10 @@ export default {
     items: []
   }),
   computed: {
-    ...mapState({
-      user: state => state.auth.user,
-      isLoggedIn: state => state.auth.isLoggedIn
+    ...mapGetters({
+      currentUser: 'auth/currentUser',
+      isAnonymous: 'auth/isAnonymous',
+      isLoggedIn: 'auth/isLoggedIn'
     })
   },
   methods: {
@@ -71,28 +72,26 @@ export default {
       await this.$router.push({name: 'Login'})
     },
     loadRoleItems() {
-      if (!this.isLoggedIn) {
-        this.items = [
-          {title: 'Home', icon: 'mdi-home', route: {name: 'Home'}},
-          {
-            title: 'New Article',
-            icon: 'mdi-newspaper',
-            route: {name: 'NewArticle'}
-          },
-          {title: 'Settings', icon: 'mdi-cogs', route: {name: 'Settings'}},
-          {
-            title: 'User Profile',
-            icon: 'mdi-account',
-            route: {name: 'UserProfile'}
+      this.items = [
+        {title: 'Home', icon: 'mdi-home', route: {name: 'Home'}},
+        {
+          title: 'New Article',
+          icon: 'mdi-newspaper',
+          route: {name: 'NewArticle'}
+        },
+        {title: 'Settings', icon: 'mdi-cogs', route: {name: 'Settings'}},
+        {
+          title: this.currentUser.username,
+          icon: 'mdi-account',
+          route: {
+            name: 'UserProfile',
+            params: {slug: this.currentUser.username}
           }
-        ]
-      } else {
-        this.items = [{title: 'Home', icon: 'mdi-home', route: {name: 'Home'}}]
-      }
+        }
+      ]
     }
   },
   mounted() {
-    console.log(this.isLoggedIn)
     this.loadRoleItems()
   }
 }

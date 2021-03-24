@@ -27,9 +27,10 @@ const routes = [
       import(/* webpackChunkName: "new-article" */ '@/views/article/NewArticle')
   },
   {
-    path: '/user-profile',
+    path: '/user-profile/:slug',
     name: 'UserProfile',
     meta: {layout: 'main', auth: true},
+    props: true,
     component: () =>
       import(
         /* webpackChunkName: "user-profile" */ '@/views/profile/UserProfile'
@@ -58,7 +59,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = to.matched.some(m => m.meta.auth)
-  const user = store.state.auth.user
+  const user = store.state.auth.currentUser
   const accessToken = getItem('accessToken')
   if (to.name !== 'Login' && !!isAuthenticated && !user && !accessToken) {
     next({name: 'Login'})

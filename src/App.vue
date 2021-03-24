@@ -13,9 +13,6 @@ import EmptyLayout from '@/layouts/EmptyLayout'
 export default {
   name: 'App',
   components: {MainLayout, EmptyLayout},
-  data: () => ({
-    //
-  }),
   computed: {
     layout() {
       return (this.$route.meta.layout || 'empty') + '-layout'
