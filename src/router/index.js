@@ -27,6 +27,15 @@ const routes = [
       import(/* webpackChunkName: "new-article" */ '@/views/article/NewArticle')
   },
   {
+    path: '/user-profile',
+    name: 'UserProfile',
+    meta: {layout: 'main', auth: true},
+    component: () =>
+      import(
+        /* webpackChunkName: "user-profile" */ '@/views/profile/UserProfile'
+      )
+  },
+  {
     path: '/login',
     name: 'Login',
     meta: {layout: 'empty'},

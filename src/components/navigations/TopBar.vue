@@ -14,7 +14,7 @@
 
     <v-spacer />
 
-    <v-list class="d-flex mr-10" color="transparent" dense rounded>
+    <v-list class="d-flex mr-5" color="transparent" dense rounded>
       <v-list-item
         v-for="item in items"
         :key="item.title"
@@ -54,15 +54,7 @@ export default {
   name: 'TopBar',
   inheritAttrs: false,
   data: () => ({
-    items: [
-      {title: 'Home', icon: 'mdi-home', route: {name: 'Home'}},
-      {
-        title: 'New Article',
-        icon: 'mdi-newspaper',
-        route: {name: 'NewArticle'}
-      },
-      {title: 'Settings', icon: 'mdi-cogs', route: {name: 'Settings'}}
-    ]
+    items: []
   }),
   computed: {
     ...mapState({
@@ -77,8 +69,31 @@ export default {
     async logoutHandler() {
       await this.logout()
       await this.$router.push({name: 'Login'})
+    },
+    loadRoleItems() {
+      if (!this.isLoggedIn) {
+        this.items = [
+          {title: 'Home', icon: 'mdi-home', route: {name: 'Home'}},
+          {
+            title: 'New Article',
+            icon: 'mdi-newspaper',
+            route: {name: 'NewArticle'}
+          },
+          {title: 'Settings', icon: 'mdi-cogs', route: {name: 'Settings'}},
+          {
+            title: 'User Profile',
+            icon: 'mdi-account',
+            route: {name: 'UserProfile'}
+          }
+        ]
+      } else {
+        this.items = [{title: 'Home', icon: 'mdi-home', route: {name: 'Home'}}]
+      }
     }
   },
-  mounted() {}
+  mounted() {
+    console.log(this.isLoggedIn)
+    this.loadRoleItems()
+  }
 }
 </script>
