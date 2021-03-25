@@ -14,7 +14,13 @@
 
     <v-spacer />
 
-    <v-list class="d-flex mr-2 mr-md-5" color="transparent" dense rounded>
+    <v-list
+      class="d-flex"
+      :class="currentUser ? 'mr-2 mr-md-5' : ''"
+      color="transparent"
+      dense
+      rounded
+    >
       <v-list-item
         v-for="item in items"
         :key="item.title"
@@ -37,6 +43,7 @@
     </v-list>
 
     <v-btn
+      v-if="currentUser"
       color="white black--text"
       elevation="3"
       class="rounded mr-5"
@@ -65,34 +72,56 @@ export default {
   },
   methods: {
     ...mapActions({
-      logout: 'auth/LOGOUT'
+      logout: 'auth/LOGOUT',
+      getCurrentUser: 'auth/GET_CURRENT_USER'
     }),
     async logoutHandler() {
       await this.logout()
       await this.$router.push({name: 'Login'})
     },
     loadRoleItems() {
-      this.items = [
-        {title: 'Home', icon: 'mdi-home', route: {name: 'Home'}},
-        {
-          title: 'New Article',
-          icon: 'mdi-newspaper',
-          route: {name: 'NewArticle'}
-        },
-        {title: 'Settings', icon: 'mdi-cogs', route: {name: 'Settings'}},
-        {
-          title: this.currentUser.username,
-          icon: 'mdi-account',
-          route: {
-            name: 'UserProfile',
-            params: {slug: this.currentUser.username}
+      if (this.currentUser) {
+        this.items = [
+          {title: 'Home', icon: 'mdi-home', route: {name: 'Home'}},
+          {
+            title: 'New Article',
+            icon: 'mdi-newspaper',
+            route: {name: 'NewArticle'}
+          },
+          {title: 'Settings', icon: 'mdi-cogs', route: {name: 'Settings'}},
+          {
+            title: this.currentUser.username,
+            icon: 'mdi-account',
+            route: {
+              name: 'UserProfile',
+              params: {slug: this.currentUser.username}
+            }
           }
-        }
-      ]
+        ]
+      } else {
+        this.items = [
+          {title: 'Home', icon: 'mdi-home', route: {name: 'Home'}},
+          {
+            title: 'Sign in',
+            icon: 'mdi-clipboard-account',
+            route: {name: 'Login'}
+          },
+          {
+            title: 'Sign up',
+            icon: 'mdi-account-plus',
+            route: {name: 'Register'}
+          }
+        ]
+      }
     }
   },
-  mounted() {
-    this.loadRoleItems()
+  async mounted() {
+    await this.getCurrentUser()
+  },
+  watch: {
+    currentUser() {
+      this.loadRoleItems()
+    }
   }
 }
 </script>
