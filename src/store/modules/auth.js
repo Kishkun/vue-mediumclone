@@ -81,7 +81,7 @@ const actions = {
         commit('SET_USER', response.data.user)
       }
     } catch (error) {
-      console.log(error.response.data.errors)
+      console.log('Error, user not found, contact the administrator')
     }
     commit('LOADING_CURRENT_USER', false)
   },
@@ -90,7 +90,7 @@ const actions = {
       commit('SET_USER', null)
       removeItem('accessToken')
     } catch (error) {
-      commit('SET_ERRORS', error.response.data.errors)
+      console.log('Something went wrong, contact the administrator')
     }
   }
 }

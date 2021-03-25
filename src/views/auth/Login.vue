@@ -1,6 +1,6 @@
 <template>
-  <v-container class="fill-height">
-    <v-row class="justify-center align-center fill-height" no-gutters>
+  <v-container class="mt-16">
+    <v-row class="justify-center mt-16" no-gutters>
       <v-col cols="12" sm="4">
         <h2 class="text-h2 text-center mb-4">Sign In</h2>
         <router-link
@@ -86,7 +86,10 @@ export default {
           email: this.email,
           password: this.password
         }
-        await this.login(user)
+        await this.login(user).then(() => {
+          this.$router.push({name: 'Home'})
+          this.reset()
+        })
       }
     },
     validationForm() {
@@ -110,16 +113,16 @@ export default {
     this.setErrors(null)
   },
   watch: {
-    isLoggedIn: {
-      handler(value) {
-        if (value) {
-          this.reset()
-          this.$nextTick(() => {
-            this.$router.push({name: 'Home'})
-          })
-        }
-      }
-    }
+    // isLoggedIn: {
+    //   handler(value) {
+    //     if (value) {
+    //       this.reset()
+    //       this.$nextTick(() => {
+    //         this.$router.push({name: 'Home'})
+    //       })
+    //     }
+    //   }
+    // }
   }
 }
 </script>
