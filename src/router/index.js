@@ -8,9 +8,50 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'GlobalFeed',
     meta: {layout: 'main', auth: true},
-    component: () => import(/* webpackChunkName: "home" */ '@/views/home/Home')
+    component: () =>
+      import(/* webpackChunkName: "global feed" */ '@/views/feed/GlobalFeed')
+  },
+  {
+    path: '/feed',
+    name: 'YourFeed',
+    meta: {layout: 'main', auth: true},
+    props: true,
+    component: () =>
+      import(/* webpackChunkName: "your feed" */ '@/views/feed/GlobalFeed')
+  },
+  {
+    path: '/tags/:slug',
+    name: 'TagFeed',
+    meta: {layout: 'main', auth: true},
+    props: true,
+    component: () =>
+      import(/* webpackChunkName: "tag feed" */ '@/views/feed/GlobalFeed')
+  },
+  {
+    path: '/article/new',
+    name: 'CreateArticle',
+    meta: {layout: 'main', auth: true},
+    props: true,
+    component: () =>
+      import(/* webpackChunkName: "new article" */ '@/views/feed/GlobalFeed')
+  },
+  {
+    path: '/article/:slug',
+    name: 'Article',
+    meta: {layout: 'main', auth: true},
+    props: true,
+    component: () =>
+      import(/* webpackChunkName: "article" */ '@/views/feed/GlobalFeed')
+  },
+  {
+    path: '/article/:slug/edit',
+    name: 'EditArticle',
+    meta: {layout: 'main', auth: true},
+    props: true,
+    component: () =>
+      import(/* webpackChunkName: "article" */ '@/views/feed/GlobalFeed')
   },
   {
     path: '/settings',
@@ -20,15 +61,18 @@ const routes = [
       import(/* webpackChunkName: "settings" */ '@/views/settings/Settings')
   },
   {
-    path: '/new-article',
-    name: 'NewArticle',
+    path: '/profiles/:slug',
+    name: 'UserProfile',
     meta: {layout: 'main', auth: true},
+    props: true,
     component: () =>
-      import(/* webpackChunkName: "new-article" */ '@/views/article/NewArticle')
+      import(
+        /* webpackChunkName: "user-profile" */ '@/views/profile/UserProfile'
+      )
   },
   {
-    path: '/user-profile/:slug',
-    name: 'UserProfile',
+    path: '/profiles/:slug/favorites',
+    name: 'UserProfileFavorites',
     meta: {layout: 'main', auth: true},
     props: true,
     component: () =>
@@ -67,12 +111,12 @@ const router = new VueRouter({
 //     if (accessToken) {
 //       next()
 //     } else {
-//       next({name: 'Home'})
+//       next({name: 'GlobalFeed'})
 //     }
 //   } else if (!to.name && !accessToken) {
 //     next({name: 'Login'})
 //   } else if (!to.name && !isAuthenticated && accessToken) {
-//     next({name: 'Home'})
+//     next({name: 'GlobalFeed'})
 //   } else {
 //     next()
 //   }

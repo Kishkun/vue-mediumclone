@@ -139,7 +139,7 @@ export default {
         if (value) {
           this.reset()
           this.$nextTick(() => {
-            this.$router.push({name: 'Home'})
+            this.$router.push({name: 'GlobalFeed'})
           })
         }
       }

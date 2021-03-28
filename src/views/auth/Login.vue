@@ -87,7 +87,7 @@ export default {
           password: this.password
         }
         await this.login(user).then(() => {
-          this.$router.push({name: 'Home'})
+          this.$router.push({name: 'GlobalFeed'})
           this.reset()
         })
       }
@@ -118,7 +118,7 @@ export default {
     //     if (value) {
     //       this.reset()
     //       this.$nextTick(() => {
-    //         this.$router.push({name: 'Home'})
+    //         this.$router.push({name: 'GlobalFeed'})
     //       })
     //     }
     //   }
