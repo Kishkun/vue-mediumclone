@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app flat height="90" class="elevation-0 border-bottom">
-    <router-link :to="{name: 'Home'}">
+    <router-link :to="{name: 'GlobalFeed'}">
       <div class="d-flex align-center ml-lg-5">
         <v-img
           alt="logo"
@@ -59,7 +59,6 @@ import {mapActions, mapGetters} from 'vuex'
 
 export default {
   name: 'TopBar',
-  inheritAttrs: false,
   data: () => ({
     items: []
   }),
@@ -82,11 +81,11 @@ export default {
     loadRoleItems() {
       if (this.currentUser) {
         this.items = [
-          {title: 'Home', icon: 'mdi-home', route: {name: 'Home'}},
+          {title: 'Home', icon: 'mdi-home', route: {name: 'GlobalFeed'}},
           {
             title: 'New Article',
             icon: 'mdi-newspaper',
-            route: {name: 'NewArticle'}
+            route: {name: 'CreateArticle'}
           },
           {title: 'Settings', icon: 'mdi-cogs', route: {name: 'Settings'}},
           {
@@ -100,7 +99,7 @@ export default {
         ]
       } else {
         this.items = [
-          {title: 'Home', icon: 'mdi-home', route: {name: 'Home'}},
+          {title: 'Home', icon: 'mdi-home', route: {name: 'GlobalFeed'}},
           {
             title: 'Sign in',
             icon: 'mdi-clipboard-account',
@@ -116,7 +115,7 @@ export default {
     }
   },
   async mounted() {
-    await this.getCurrentUser()
+    await this.getCurrentUser().then(() => this.loadRoleItems())
   },
   watch: {
     currentUser() {
