@@ -31,7 +31,7 @@
               class="d-flex flex-column"
             >
               <span class="green--text">{{ article.author.username }}</span>
-              <span class="grey--text">{{ article.createdAt }}</span>
+              <span class="grey--text font__14">{{ article.createdAt }}</span>
             </router-link>
           </div>
           <div>
@@ -48,8 +48,8 @@
             <span class="black--text">TAG LIST</span>
           </v-card-text>
         </router-link>
-        <v-card-actions>PAGINATION</v-card-actions>
       </v-card>
+      <div>PAGINATION</div>
     </div>
   </div>
 </template>
