@@ -48,38 +48,78 @@
             <span class="black--text">TAG LIST</span>
           </v-card-text>
         </router-link>
-        <v-card-actions>PAGINATION</v-card-actions>
       </v-card>
+      <Pagination
+        :currentPage="currentPage"
+        :length="Math.ceil(feed.articlesCount / limit)"
+        @input="handlePageChange"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import {mapActions, mapState} from 'vuex'
+import {limit} from '@/helpers/vars'
+import Pagination from '@/components/Pagination'
+import {stringify, parseUrl} from 'query-string'
 
 export default {
   name: 'Feed',
+  components: {Pagination},
   props: {
     apiUrl: {
       type: String,
       required: true
     }
   },
-  data: () => ({}),
+  data: () => ({
+    limit
+  }),
   computed: {
     ...mapState({
       isLoading: state => state.feed.isLoading,
       feed: state => state.feed.data,
       error: state => state.feed.error
-    })
+    }),
+    currentPage() {
+      return Number(this.$route.query.page || '1')
+    },
+    baseUrl() {
+      return this.$route.path
+    },
+    offset() {
+      return this.currentPage * limit - limit
+    }
   },
   methods: {
     ...mapActions({
       fetchFeed: 'feed/GET_FEED'
-    })
+    }),
+    async fetchData() {
+      const parsedUrl = parseUrl(this.apiUrl)
+      const stringParams = stringify({
+        limit,
+        offset: this.offset || 0,
+        ...parsedUrl.query
+      })
+      const apiUrlWithParams = `${parsedUrl.url}?${stringParams}`
+      await this.fetchFeed({apiUrl: apiUrlWithParams})
+    },
+    handlePageChange(value) {
+      this.$router.push({
+        path: this.baseUrl,
+        query: {page: Number(value)}
+      })
+    }
   },
-  async mounted() {
-    await this.fetchFeed({apiUrl: this.apiUrl})
+  mounted() {
+    this.fetchData()
+  },
+  watch: {
+    currentPage() {
+      this.fetchData()
+    }
   }
 }
 </script>

@@ -51,7 +51,7 @@ const routes = [
     meta: {layout: 'main', auth: true},
     props: true,
     component: () =>
-      import(/* webpackChunkName: "article" */ '@/views/feed/GlobalFeed')
+      import(/* webpackChunkName: "edit article" */ '@/views/feed/GlobalFeed')
   },
   {
     path: '/settings',
@@ -67,7 +67,7 @@ const routes = [
     props: true,
     component: () =>
       import(
-        /* webpackChunkName: "user-profile" */ '@/views/profile/UserProfile'
+        /* webpackChunkName: "user profile" */ '@/views/profile/UserProfile'
       )
   },
   {
@@ -77,7 +77,7 @@ const routes = [
     props: true,
     component: () =>
       import(
-        /* webpackChunkName: "user-profile" */ '@/views/profile/UserProfile'
+        /* webpackChunkName: "favorites profile" */ '@/views/profile/UserProfile'
       )
   },
   {
@@ -85,7 +85,7 @@ const routes = [
     name: 'Login',
     meta: {layout: 'main'},
     component: () =>
-      import(/* webpackChunkName: "register" */ '@/views/auth/Login')
+      import(/* webpackChunkName: "login" */ '@/views/auth/Login')
   },
   {
     path: '/register',

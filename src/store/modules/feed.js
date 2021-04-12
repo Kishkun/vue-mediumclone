@@ -12,6 +12,9 @@ const mutations = {
   },
   SET_LOADING(state, isLoading) {
     state.isLoading = isLoading
+    if (isLoading) {
+      state.data = null
+    }
   },
   SET_ERROR(state, error) {
     state.error = error
