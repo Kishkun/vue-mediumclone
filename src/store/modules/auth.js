@@ -67,6 +67,8 @@ const actions = {
       if (response.data) {
         commit('SET_USER', response.data.user)
         setItem('accessToken', response.data.user.token)
+      } else {
+        commit('SET_ERRORS', 'Error, contact the administrator')
       }
     } catch (error) {
       commit('SET_ERRORS', error.response.data.errors)
