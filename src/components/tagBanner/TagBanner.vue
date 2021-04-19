@@ -1,8 +1,14 @@
 <template>
-  <v-banner class="ml-5" sticky elevation="3" style="top: 120px">
-    <div v-if="isLoading">Loading popular tags...</div>
-    <div v-if="error">Something bad happened</div>
-    <div v-if="tag">
+  <div>
+    <Loading v-if="isLoading" :message="message" />
+    <Error v-if="error" />
+    <v-banner
+      v-if="tag"
+      class="ml-md-5 mb-10 mb-md-0"
+      sticky
+      elevation="3"
+      style="top: 120px"
+    >
       <h6 class="text-h6 mb-5">Popular Tags:</h6>
       <div class="d-flex flex-wrap align-center">
         <v-btn
@@ -15,14 +21,17 @@
           {{ popularTag }}
         </v-btn>
       </div>
-    </div>
-  </v-banner>
+    </v-banner>
+  </div>
 </template>
 
 <script>
 import {mapState, mapActions} from 'vuex'
 export default {
   name: 'TagBanner',
+  data: () => ({
+    message: 'Loading tag...'
+  }),
   computed: {
     ...mapState({
       isLoading: state => state.tag.isLoading,

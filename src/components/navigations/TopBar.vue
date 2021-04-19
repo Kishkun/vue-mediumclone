@@ -1,5 +1,11 @@
 <template>
-  <v-app-bar app flat height="90" class="elevation-0 border-bottom">
+  <v-app-bar
+    app
+    flat
+    height="90"
+    color="orange lighten-2"
+    class="elevation-0 border-bottom"
+  >
     <router-link :to="{name: 'GlobalFeed'}">
       <div class="d-flex align-center ml-lg-5">
         <v-img
@@ -27,7 +33,7 @@
         link
         class="mr-3 px-3 px-md-6"
         :to="item.route"
-        color="primary"
+        color="red"
         exact
       >
         <v-list-item-icon class="mr-1 mr-md-4">
