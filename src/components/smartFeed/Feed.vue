@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="isLoading">Loading feed...</div>
-    <div v-if="error">Something bad happened</div>
+    <Loading v-if="isLoading" />
+    <Error v-if="error" />
     <div v-if="feed">
       <v-card
         class="mb-10 pa-5 article-preview"
