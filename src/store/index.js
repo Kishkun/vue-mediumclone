@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 import auth from './modules/auth'
 import feed from './modules/feed'
+import tag from './modules/tag'
 
 export default new Vuex.Store({
   state: () => ({}),
@@ -12,6 +13,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     auth,
-    feed
+    feed,
+    tag
   }
 })
