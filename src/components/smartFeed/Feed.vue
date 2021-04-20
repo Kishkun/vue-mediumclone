@@ -49,7 +49,9 @@
           </v-card-text>
         </router-link>
       </v-card>
+      <div v-if="feed.articles.length === 0">You don't have articles ...</div>
       <Pagination
+        v-if="feed.articlesCount"
         :currentPage="currentPage"
         :length="Math.ceil(feed.articlesCount / limit)"
         @input="handlePageChange"
@@ -90,6 +92,9 @@ export default {
     },
     offset() {
       return this.currentPage * limit - limit
+    },
+    routeParams() {
+      return this.$route.params.slug
     }
   },
   methods: {
@@ -118,6 +123,9 @@ export default {
   },
   watch: {
     currentPage() {
+      this.fetchData()
+    },
+    routeParams() {
       this.fetchData()
     }
   }

@@ -19,7 +19,7 @@ const routes = [
     meta: {layout: 'main', auth: true},
     props: true,
     component: () =>
-      import(/* webpackChunkName: "your feed" */ '@/views/feed/GlobalFeed')
+      import(/* webpackChunkName: "your feed" */ '@/views/feed/YourFeed')
   },
   {
     path: '/tags/:slug',
@@ -27,7 +27,7 @@ const routes = [
     meta: {layout: 'main', auth: true},
     props: true,
     component: () =>
-      import(/* webpackChunkName: "tag feed" */ '@/views/feed/GlobalFeed')
+      import(/* webpackChunkName: "tag feed" */ '@/views/feed/TagFeed')
   },
   {
     path: '/article/new',

@@ -4,7 +4,7 @@
     <v-container class="page">
       <v-row no-gutters>
         <v-col cols="12" md="8" lg="9">
-          <FeedToggle />
+          <FeedToggle :tagName="tagName" />
           <v-divider class="mb-5" />
           <Feed :apiUrl="apiUrl" />
         </v-col>
@@ -21,10 +21,15 @@ import Feed from '@/components/smartFeed/Feed'
 import TagBanner from '@/components/tagBanner/TagBanner'
 
 export default {
-  name: 'GlobalFeed',
+  name: 'TagFeed',
   components: {Feed, TagBanner},
-  data: () => ({
-    apiUrl: '/articles'
-  })
+  computed: {
+    tagName() {
+      return this.$route.params.slug
+    },
+    apiUrl() {
+      return `/articles?tag=${this.tagName}`
+    }
+  }
 }
 </script>

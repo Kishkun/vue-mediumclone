@@ -25,6 +25,8 @@ const mutations = {
   },
   LOADING_CURRENT_USER(state, payload) {
     state.isLoading = payload
+  },
+  LOGGED_CURRENT_USER(state, payload) {
     state.isLoggedIn = payload
   }
 }
@@ -81,6 +83,7 @@ const actions = {
       const response = await authApi.getUser()
       if (response.data) {
         commit('SET_USER', response.data.user)
+        commit('LOGGED_CURRENT_USER', true)
       }
     } catch (error) {
       console.log('Error, user not found, contact the administrator')
@@ -91,6 +94,7 @@ const actions = {
     try {
       commit('SET_USER', null)
       removeItem('accessToken')
+      commit('LOGGED_CURRENT_USER', false)
     } catch (error) {
       console.log('Something went wrong, contact the administrator')
     }

@@ -21,10 +21,10 @@ import Feed from '@/components/smartFeed/Feed'
 import TagBanner from '@/components/tagBanner/TagBanner'
 
 export default {
-  name: 'GlobalFeed',
+  name: 'YourFeed',
   components: {Feed, TagBanner},
   data: () => ({
-    apiUrl: '/articles'
+    apiUrl: '/articles/feed'
   })
 }
 </script>
