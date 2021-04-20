@@ -8,10 +8,12 @@ import './scss/app.scss'
 import Loading from '@/components/Loading'
 import Error from '@/components/Error'
 import TopBanner from '@/components/TopBanner'
+import FeedToggle from '@/components/smartFeed/FeedToggle'
 
 Vue.component('Loading', Loading)
 Vue.component('Error', Error)
 Vue.component('TopBanner', TopBanner)
+Vue.component('FeedToggle', FeedToggle)
 
 Vue.config.productionTip = false
 
